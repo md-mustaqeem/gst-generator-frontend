@@ -46,6 +46,11 @@ export default function AdminBusiness() {
       loadBusiness();
     } catch (error) {
       console.error(error);
+      console.log("Status:", error.response?.status);
+      console.log("Response:", error.response?.data);
+      console.log("Business:", business);
+
+      alert(JSON.stringify(error.response?.data));
       alert("Unable to Save Business");
     } finally {
       setLoading(false);
