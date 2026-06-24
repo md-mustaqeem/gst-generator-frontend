@@ -24,7 +24,7 @@ export default function InvoicePreview({
 
   invoiceSaved,
   savedInvoice,
-
+  saving,
   isTyping,
 
   onGenerate,
@@ -329,13 +329,27 @@ export default function InvoicePreview({
         {/* Save */}
         <button
           onClick={onGenerate}
-          className="group flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition-all"
+          disabled={saving}
+          className={`group flex h-11 items-center justify-center gap-2 rounded-xl font-medium shadow transition-all ${
+            saving
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
-          <FileText
-            size={17}
-            className="transition-transform group-hover:scale-110"
-          />
-          <span>Save</span>
+          {saving ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Saving...</span>
+            </>
+          ) : (
+            <>
+              <FileText
+                size={17}
+                className="transition-transform group-hover:scale-110"
+              />
+              <span>Save</span>
+            </>
+          )}
         </button>
 
         {/* Download */}

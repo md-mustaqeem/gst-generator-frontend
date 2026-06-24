@@ -44,6 +44,7 @@ export default function Home() {
   const [savedInvoice, setSavedInvoice] = useState(null);
 
   const [recentInvoices, setRecentInvoices] = useState([]);
+  const [saving, setSaving] = useState(false);
 
   const today = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Kolkata",
@@ -70,6 +71,7 @@ export default function Home() {
 
   const handleGenerate = async () => {
     try {
+      setSaving(true);
       const request = {
         customer: {
           name: customer.name,
@@ -146,8 +148,6 @@ export default function Home() {
 
       const uploadResponse = await uploadPdf(formData);
 
-      // console.log("Cloudinary URL :", uploadResponse.data.url);
-
       setInvoiceSaved(true);
 
       setIsTyping(false);
@@ -156,22 +156,16 @@ export default function Home() {
 
       handleReset();
     } catch (error) {
-      // console.log("Status:", error.response?.status);
-      // console.log("Response:", error.response?.data);
-
       alert(JSON.stringify(error.response?.data));
-
-      // console.error(error);
-
       setInvoiceSaved(false);
 
       alert("Unable to save invoice");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleReset = () => {
-    // console.log("Reset Button Clicked");
-
     setCustomer({
       name: "",
       phone: "",
@@ -287,6 +281,7 @@ export default function Home() {
               paidAmount={paidAmount}
               dueAmount={dueAmount}
               onGenerate={handleGenerate}
+              saving={saving}
               invoiceSaved={invoiceSaved}
               savedInvoice={savedInvoice}
               setCustomer={setCustomer}
